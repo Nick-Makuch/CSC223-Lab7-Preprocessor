@@ -70,7 +70,11 @@ public class Segment extends GeometricObject
 
 	public boolean HasSubSegment(Segment candidate)
 	{
-        // TODO
+		if(SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint1()) 
+				&& SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint2()))
+			return true;
+		
+		return false;
 	}
 
 	/**
