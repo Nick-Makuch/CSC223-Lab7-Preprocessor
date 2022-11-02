@@ -169,7 +169,9 @@ public class Segment extends GeometricObject
 	{
 		SortedSet<Point> pointsOn = new TreeSet<Point>();
 
-        // TODO
+		for(Point p : points) 
+			if(SegmentDelegate.pointLiesOnSegment(this, p))
+				pointsOn.add(p);
 
 		return pointsOn;
 	}
