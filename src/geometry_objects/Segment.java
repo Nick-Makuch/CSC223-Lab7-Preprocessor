@@ -70,8 +70,11 @@ public class Segment extends GeometricObject
 
 	public boolean HasSubSegment(Segment candidate)
 	{
-		return SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint1())
-				&& SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint2());
+		if(SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint1()) 
+				&& SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint2()))
+			return true;
+		
+		return false;
 	}
 
 	/**
@@ -151,7 +154,11 @@ public class Segment extends GeometricObject
 	 */
 	public boolean coincideWithoutOverlap(Segment that)
 	{
-        // TODO
+		// if neither of the points of that are on the segment we return false
+		if (!SegmentDelegate.pointLiesOnSegment(this, that.getPoint1()) && 
+				!SegmentDelegate.pointLiesOnSegment(this, that.getPoint2())) return false;
+		// if at least one of the points are on the segment and the slopes are equal
+		return MathUtilities.doubleEquals(_slope, that.slope());
 	}
 	
 	/**
@@ -162,9 +169,7 @@ public class Segment extends GeometricObject
 	{
 		SortedSet<Point> pointsOn = new TreeSet<Point>();
 
-		for(Point p : points) 
-			if(SegmentDelegate.pointLiesOnSegment(this, p))
-				pointsOn.add(p);
+        // TODO
 
 		return pointsOn;
 	}
