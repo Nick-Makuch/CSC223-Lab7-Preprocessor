@@ -87,4 +87,23 @@ public class Preprocessor
 		_allMinimalSegments.forEach((segment) -> _segmentDatabase.put(segment, segment));
 		_nonMinimalSegments.forEach((segment) -> _segmentDatabase.put(segment, segment));
 	}
+
+	protected Set<Segment> constructAllNonMinimalSegments(Set<Segment> _allMinimalSegments2) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2,
+																					Set<Segment> _implicitSegments2) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected Set<Segment> computeImplicitBaseSegments(Set<Point> _implicitPoints2) 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
