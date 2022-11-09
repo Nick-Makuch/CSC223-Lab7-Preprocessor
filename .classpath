@@ -7,7 +7,7 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="C:/Users/nicho/OneDrive - Furman University/Documents/GitHub/CSC223-Lab4-JSONParsing/lib/json-20220320.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="/Users/emilwestling/Documents/GitHub/CSC223-Lab7-Preprocessor/json-20220320.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

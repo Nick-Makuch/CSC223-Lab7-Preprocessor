@@ -10,7 +10,7 @@ import utilities.math.MathUtilities;
  */
 public class LineDelegate
 {
-    /*
+	/*
      * @param that -- another segment
      * @return true / false if the two lines are strictly collinear
      */
@@ -20,19 +20,14 @@ public class LineDelegate
         // Also ensure that the segments have some overlap
         if (thisS.isVertical() && that.isVertical())
         {
-            return MathUtilities.doubleEquals(thisS.getPoint1().getX(), that.getPoint1().getX())
-                && (thisS.pointLiesOn(that.getPoint1()) || thisS.pointLiesOn(that.getPoint2()));
+            return MathUtilities.doubleEquals(thisS.getPoint1().getX(), that.getPoint1().getX());
         }
-
         // If the segments are horizontal, just compare the Y values of one point of each; this is redundant
         if (thisS.isHorizontal() && that.isHorizontal())
         {
-            return MathUtilities.doubleEquals(thisS.getPoint1().getY(), that.getPoint2().getY())
-                && (thisS.pointLiesOn(that.getPoint1()) || thisS.pointLiesOn(that.getPoint2()));
+            return MathUtilities.doubleEquals(thisS.getPoint1().getY(), that.getPoint2().getY());
         }
-
         // Slopes equate
-        return MathUtilities.doubleEquals(thisS.slope(), that.slope()) &&
-               (thisS.pointLiesOn(that.getPoint1()) || thisS.pointLiesOn(that.getPoint2()));
+        return MathUtilities.doubleEquals(thisS.slope(), that.slope());
     }
 }
