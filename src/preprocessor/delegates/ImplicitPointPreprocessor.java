@@ -32,7 +32,7 @@ public class ImplicitPointPreprocessor
 			for(int j = i+1; j < givenSegments.size(); j++) 
 			{
 				checkPoint = IntersectionDelegate.segmentIntersection(givenSegments.get(i), givenSegments.get(j));
-				if(givenPoints.getPoint(checkPoint) != null) 
+				if(givenPoints.getPoint(checkPoint) == null) 
 				{
 					implicitPoints.add(checkPoint);
 				}
