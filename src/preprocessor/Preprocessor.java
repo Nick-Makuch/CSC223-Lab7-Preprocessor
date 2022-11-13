@@ -126,17 +126,48 @@ public class Preprocessor
 		return impSeg;
 	}
 
-	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2,
-																					Set<Segment> _implicitSegments2) 
+	
+	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2)																			Set<Segment> _implicitSegments2) 
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * checks every segment if there is a connected segment
+	 * 
+	 * @param _allMinimalSegments2
+	 * @return
+	 */
 	protected Set<Segment> constructAllNonMinimalSegments(Set<Segment> _allMinimalSegments2) 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		Set<Segment> nonMinSeg = new HashSet<Segment>();
+		for (Segment s1 : _allMinimalSegments2) {
+			for (Segment s2: _allMinimalSegments2) {
+				// if they are collinear and they segments are the same
+				if (!s1.equals(s2) && s1.coincideWithoutOverlap(s2)) {
+					// if they share a vertex, then proceed
+					if (s1.sharedVertex(s2) != null) {
+						Segment newS = null;
+						Point sharedP = s1.sharedVertex(s2);
+						// determines which which points that make up the segment
+						if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint1())) { 
+							newS = new Segment(s1.getPoint2(), s2.getPoint2());
+						}
+						else if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint2())) {
+							newS = new Segment(s1.getPoint2(), s2.getPoint1());
+						}
+						else if (sharedP.equals(s1.getPoint2()) && sharedP.equals(s2.getPoint1())) {
+							newS = new Segment(s1.getPoint1(), s2.getPoint2());
+						}
+						else {
+							newS = new Segment(s1.getPoint1(), s2.getPoint1());
+						}
+						nonMinSeg.add(newS);
+					}
+				}
+			}
+		}
+		return nonMinSeg;
 	}
 	
 }
