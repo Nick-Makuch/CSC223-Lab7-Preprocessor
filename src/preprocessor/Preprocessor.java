@@ -129,7 +129,31 @@ public class Preprocessor
 	
 	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2)																			Set<Segment> _implicitSegments2) 
 	{
-		return null;
+		Set<Segment> allMinSegments = new LinkedHashSet<Segment>();
+		
+		//Loops through each given segment and checks if it is a minimum segment
+		//by seeing if there is an implicit point on the segment
+		for(Segment s : _givenSegments2) 
+		{
+			for(Point p : _implicitPoints2) 
+			{
+				if(!s.pointLiesOn(p))
+					allMinSegments.add(s);
+			}
+		}
+		
+		//add all implicit segments to the set after performing same check as before
+		for(Segment s : _implicitSegments2) 
+		{
+			for(Point p : _implicitPoints2) 
+			{
+				if(!s.pointLiesOn(p))
+					allMinSegments.add(s);
+			}
+		}
+		
+		return allMinSegments;
+		
 	}
 
 	/**
