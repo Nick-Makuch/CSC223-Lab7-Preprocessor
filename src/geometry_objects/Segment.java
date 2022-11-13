@@ -70,8 +70,8 @@ public class Segment extends GeometricObject
 
 	public boolean HasSubSegment(Segment candidate)
 	{
-		if(SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint1()) 
-				&& SegmentDelegate.pointLiesOnSegment(this, candidate.getPoint2()))
+		if(pointLiesOnSegment(candidate.getPoint1()) 
+				&& pointLiesOnSegment(candidate.getPoint2()))
 			return true;
 		
 		return false;
@@ -172,11 +172,10 @@ public class Segment extends GeometricObject
 	public SortedSet<Point> collectOrderedPointsOnSegment(Set<Point> points)
 	{
 		SortedSet<Point> pointsOn = new TreeSet<Point>();
-
+		// check every point and add to pointsOn if the point is on the line
 		for(Point p : points) 
-			if(SegmentDelegate.pointLiesOnSegment(this, p))
+			if(pointLiesBetweenEndpoints(p))
 				pointsOn.add(p);
-
 		return pointsOn;
 	}
 }

@@ -169,5 +169,6 @@ public class SegmentTest {
 		ptSet = AD.collectOrderedPointsOnSegment(ptSet);
 		ArrayList<Point> listCon = new ArrayList<Point>(Arrays.asList(B,C));
 		assertTrue(ptSet.containsAll(listCon));
+		assertFalse(ptSet.contains(A));
 	}
 }

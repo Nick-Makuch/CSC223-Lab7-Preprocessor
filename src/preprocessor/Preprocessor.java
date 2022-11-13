@@ -12,6 +12,7 @@ import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
 import preprocessor.delegates.ImplicitPointPreprocessor;
 import geometry_objects.Segment;
+import geometry_objects.delegates.SegmentDelegate;
 
 public class Preprocessor
 {
@@ -90,7 +91,27 @@ public class Preprocessor
 
 	protected Set<Segment> computeImplicitBaseSegments(Set<Point> _implicitPoints2) 
 	{
-		// TODO Auto-generated method stub
+		// get the set of points that are on a specific segment
+		// if there's an implicit point, then create a new segment
+		// from the implicit point to the edge or if there's 
+		// another implicit point before the edge
+		for (Segment s : _givenSegments) {
+			SortedSet<Point> points = s.collectOrderedPointsOnSegment(_implicitPoints2);
+			for (Point p : points) {
+				// adds the two segments that is connected with the endpoints
+				Segment newS1 = new Segment(s.getPoint1(), p);
+				_implicitSegments.add(newS1);
+				Segment newS2 = new Segment(s.getPoint2(), p);
+				_implicitSegments.add(newS2);
+				// creates segments between the implicit points
+				for (Point p2 : points) {
+					if (!p2.equals(p) && !_implicitSegments.contains(new Segment(p, p2))) {
+						Segment newS3 = new Segment(p, p2);
+						_implicitSegments.add(newS3);
+					}
+				}
+			}
+		}
 		return null;
 	}
 
