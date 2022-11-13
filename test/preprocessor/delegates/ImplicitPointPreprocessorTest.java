@@ -1,7 +1,6 @@
 package preprocessor.delegates;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import geometry_objects.Segment;
 import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
+import preprocessor.delegates.ImplicitPointPreprocessor;
 
 public class ImplicitPointPreprocessorTest 
 {
@@ -28,7 +28,7 @@ public class ImplicitPointPreprocessorTest
 	 *      D
 	 *      
 	 * This test uses the above shape and computes 
-	 * the middle intersection point as it is not
+	 * the middle intersection point as it is
 	 * an implicit point
 	 * */
 	@Test
@@ -70,13 +70,8 @@ public class ImplicitPointPreprocessorTest
 		
 		//finding correct num of implicit points, but is not putting points in set
 		assertTrue(tester.contains(null));
-		
- 		
-		//assertTrue(tester.contains(new Point(4.0, 6.0)));
-		
-//		Object[] arr = tester.toArray();
-//		Point p = (Point) arr[0];
-//		System.out.println(p.getName() +" : " + p.getX() + ", " + p.getY());
-		
+		assertFalse(tester.contains(null));
+		assertTrue(false);
+
 	}
 }

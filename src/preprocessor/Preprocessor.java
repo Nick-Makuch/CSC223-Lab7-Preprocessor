@@ -126,8 +126,11 @@ public class Preprocessor
 		return impSeg;
 	}
 
-	
-	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2)																			Set<Segment> _implicitSegments2) 
+	/**
+	 * 
+	 * */
+	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2, 
+																					Set<Segment> _implicitSegments2) 
 	{
 		Set<Segment> allMinSegments = new LinkedHashSet<Segment>();
 		
