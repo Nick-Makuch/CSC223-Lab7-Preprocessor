@@ -89,30 +89,41 @@ public class Preprocessor
 		_nonMinimalSegments.forEach((segment) -> _segmentDatabase.put(segment, segment));
 	}
 
+	/**
+	 * computes the implicit segments given the implicit points. 
+	 * 
+	 * looks at each segment and checks if there are any implicit points
+	 * on the segment. If there are, then we create the implicit segments 
+	 * related to the point and add it to the set that is being returned.   
+	 * 
+	 * 
+	 * @param _implicitPoints2 -- implicit points
+	 * @return impSeg -- a set of all implicit segments
+	 */
 	protected Set<Segment> computeImplicitBaseSegments(Set<Point> _implicitPoints2) 
 	{
-		// get the set of points that are on a specific segment
-		// if there's an implicit point, then create a new segment
-		// from the implicit point to the edge or if there's 
-		// another implicit point before the edge
+		Set<Segment> impSeg = new HashSet<Segment>();
+		// looks at each segment
 		for (Segment s : _givenSegments) {
-			SortedSet<Point> points = s.collectOrderedPointsOnSegment(_implicitPoints2);
-			for (Point p : points) {
+			SortedSet<Point> pointsOnSegment = s.collectOrderedPointsOnSegment(_implicitPoints2);
+			// checks if there are any implicit points on the segment
+			for (Point p : pointsOnSegment) {
 				// adds the two segments that is connected with the endpoints
 				Segment newS1 = new Segment(s.getPoint1(), p);
-				_implicitSegments.add(newS1);
+				impSeg.add(newS1);
 				Segment newS2 = new Segment(s.getPoint2(), p);
-				_implicitSegments.add(newS2);
-				// creates segments between the implicit points
-				for (Point p2 : points) {
-					if (!p2.equals(p) && !_implicitSegments.contains(new Segment(p, p2))) {
+				impSeg.add(newS2);
+				// if there are multiple implicit points on the segment, 
+				// then we create segments between the implicit points as well
+				for (Point p2 : pointsOnSegment) {
+					if (!p2.equals(p) && !impSeg.contains(new Segment(p, p2))) {
 						Segment newS3 = new Segment(p, p2);
-						_implicitSegments.add(newS3);
+						impSeg.add(newS3);
 					}
 				}
 			}
 		}
-		return null;
+		return impSeg;
 	}
 
 	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2,
