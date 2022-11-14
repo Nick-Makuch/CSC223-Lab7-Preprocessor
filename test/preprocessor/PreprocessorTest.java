@@ -165,6 +165,74 @@ class PreprocessorTest
 	}
 	
 	@Test
+	void testComputeImplicitBaseSegments() {
+		//
+		//          D
+		//		   /   
+		//   A ---/------- B
+		//       /
+		//    E-/-----F
+		//	   / 
+		//    C
+		//
+		Point A = new Point("A", 0,2);
+		Point B = new Point("B", 6, 2);
+		Point C = new Point("C", 1, 5);
+		Point D = new Point("D",  3, 0);
+		Point E = new Point("E", 1, 3);
+		Point F = new Point("F", 6, 3);
+		Point E_star = new Point("*_E", 9.0/5, 3);
+		Point A_star = new Point("*_A", 13.0/5, 3);
+		
+	
+		List<Point> ptList = new ArrayList<Point>();
+		ptList.add(A);
+		ptList.add(B);
+		ptList.add(C);
+		ptList.add(D);
+		ptList.add(E);
+		ptList.add(F);
+		PointDatabase ptdb = new PointDatabase(ptList);
+		
+		Segment AB = new Segment(A, B);
+		Segment EF = new Segment(E, F);
+		Segment DC = new Segment(D, C);
+		Set<Segment> segSet = new HashSet<Segment>();
+		segSet.add(AB);
+		segSet.add(EF);
+		segSet.add(DC);
+		
+		Set<Point> impPoints = new HashSet<Point>();
+		impPoints.add(E_star);
+		impPoints.add(A_star);
+		
+		Segment AA_star = new Segment(A, E_star);
+		Segment BA_star = new Segment(B, A_star);
+		Segment DA_star = new Segment(D, A_star);
+		Segment CE_star = new Segment(C, E_star);
+		Segment EE_star = new Segment(E, E_star);
+		Segment FE_star = new Segment(F, E_star);
+	
+		Set<Segment> expImpSeg = new HashSet<Segment>();
+		expImpSeg.add(FE_star);
+		expImpSeg.add(EE_star);
+		expImpSeg.add(CE_star);
+		expImpSeg.add(DA_star);
+		expImpSeg.add(BA_star);
+		expImpSeg.add(AA_star);
+		
+		
+		
+		
+		Preprocessor pp = new Preprocessor(ptdb, segSet);
+		Set<Segment> impSeg = pp.computeImplicitBaseSegments(impPoints);
+		
+		assertTrue(impSeg.contains(expImpSeg));
+		
+	}
+	
+	
+	@Test
 	void testConstructAllNonMinimalSegments_withTwoSegments() 
 	{
 		//
