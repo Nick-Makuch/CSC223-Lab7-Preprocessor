@@ -108,9 +108,10 @@ public class Preprocessor
 			Segment newS = null;
 			// create the segments from the endpoints to the closest implicit points
 			if (!ptList.isEmpty()) {
-				newS = new Segment(s.getPoint1(), ptList.remove(0));
+				newS = new Segment(s.getPoint1(), ptList.get(0));
 				impSeg.add(newS);
 				impSeg.add(new Segment(ptList.get(ptList.size()-1), s.getPoint2()));
+				ptList.remove(0);
 			}
 			// create the segments between the implicit points 
 			while (!ptList.isEmpty()) {
