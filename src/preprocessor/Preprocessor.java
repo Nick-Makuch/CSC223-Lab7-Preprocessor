@@ -14,7 +14,6 @@ import geometry_objects.points.Point;
 import geometry_objects.points.PointDatabase;
 import preprocessor.delegates.ImplicitPointPreprocessor;
 import geometry_objects.Segment;
-import geometry_objects.delegates.SegmentDelegate;
 
 public class Preprocessor
 {
@@ -93,11 +92,7 @@ public class Preprocessor
 
 	/**
 	 * computes the implicit segments given the implicit points. 
-	 * 
-	 * looks at each segment and checks if there are any implicit points
-	 * on the segment. If there are, then we create the implicit segments 
-	 * related to the point and add it to the set that is being returned.   
-	 * 
+	 *
 	 * 
 	 * @param _implicitPoints2 -- implicit points
 	 * @return impSeg -- a set of all implicit segments
@@ -107,25 +102,24 @@ public class Preprocessor
 		Set<Segment> impSeg = new HashSet<Segment>();
 		// looks at each segment
 		for (Segment s : _givenSegments) {
-			SortedSet<Point> pointsOnSegment = s.collectOrderedPointsOnSegment(_implicitPoints2);
-			// checks if there are any implicit points on the segment
-			for (Point p : pointsOnSegment) {
-				// adds the two segments that is connected with the endpoints
-				Segment newS1 = new Segment(s.getPoint1(), p);
-				impSeg.add(newS1);
-				Segment newS2 = new Segment(s.getPoint2(), p);
-				impSeg.add(newS2);
-				// if there are multiple implicit points on the segment, 
-				// then we create segments between the implicit points as well
-				for (Point p2 : pointsOnSegment) {
-					if (!p2.equals(p) && !impSeg.contains(new Segment(p, p2))) {
-						Segment newS3 = new Segment(p, p2);
-						impSeg.add(newS3);
-					}
-				}
+			// gets the set of imp points on the segment and converts it to a list
+			SortedSet<Point> pointsOnSegSet = s.collectOrderedPointsOnSegment(_implicitPoints2);
+			List<Point> ptList = new LinkedList<Point>(pointsOnSegSet);
+			Segment newS = null;
+			// create the segments from the endpoints to the closest implicit points
+			if (!ptList.isEmpty()) {
+				newS = new Segment(s.getPoint1(), ptList.remove(0));
+				impSeg.add(newS);
+				impSeg.add(new Segment(ptList.get(ptList.size()-1), s.getPoint2()));
+			}
+			// create the segments between the implicit points 
+			while (!ptList.isEmpty()) {
+				Point p = ptList.remove(0);
+				newS = new Segment(newS.getPoint2(), p);
+				impSeg.add(newS);
 			}
 		}
-		return impSeg;
+		return impSeg;	
 	}
 
 	/**
@@ -140,33 +134,30 @@ public class Preprocessor
 	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2, 
 																					Set<Segment> _implicitSegments2) 
 	{
+		// create boolean -> take one segment from givenSeg -> loop through impPoints -> if boolean is true after the  
 		Set<Segment> allMinSegments = new LinkedHashSet<Segment>();
-		
-		//Loops through each given segment and checks if it is a minimum segment
-		//by seeing if there is an implicit point on the segment
-		for(Segment s : _givenSegments2) 
-		{
-			for(Point p : _implicitPoints2) 
-			{
-				if(!s.pointLiesOn(p))
-					allMinSegments.add(s);
+		boolean min = true;
+		// loop through the segments to check if there's a imp point on given seg
+		for (Segment s : _givenSegments) {
+			for (Point p : _implicitPoints2) {
+				// if point lies on segment, set boolean to false
+				if (s.pointLiesBetweenEndpoints(p)) {
+					min = false;
+					// add imp seg containing p to set
+					for (Segment impS : _implicitSegments2) {
+						if (impS.has(p)) { 
+							allMinSegments.add(impS);
+						}
+					}
+				}
 			}
+			// if segment does not have any imp points, then add to set
+			if (min) allMinSegments.add(s);
+			min = true;
 		}
-		
-		//add all implicit segments to the set after performing same check as before
-		for(Segment s : _implicitSegments2) 
-		{
-			for(Point p : _implicitPoints2) 
-			{
-				if(!s.pointLiesOn(p))
-					allMinSegments.add(s);
-			}
-		}
-		
 		return allMinSegments;
-		
 	}
-
+	
 	/**
 	 * checks every segment if there is a connected segment
 	 * 
@@ -185,23 +176,11 @@ public class Preprocessor
 			for (Segment s2 : _allMinimalSegments2) {
 				// if the segments are collinear, share a vertex and are not the same
 				Point sharedP = s1.sharedVertex(s2);
-				if (!s1.equals(s2) && s1.coincideWithoutOverlap(s2) && sharedP != null) {
-					Segment newS = null;
-					// determines which which points that make up the segment
-					if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint1())) { 
-						newS = new Segment(s1.getPoint2(), s2.getPoint2());
-					}
-					else if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint2())) {
-						newS = new Segment(s1.getPoint2(), s2.getPoint1());
-					}
-					else if (sharedP.equals(s1.getPoint2()) && sharedP.equals(s2.getPoint1())) {
-						newS = new Segment(s1.getPoint1(), s2.getPoint2());
-					}
-					else {
-						newS = new Segment(s1.getPoint1(), s2.getPoint1());
-					}
-					// add the new segment to queue and to the set that is returned
+				if (sharedP != null && s1.coincideWithoutOverlap(s2)) {
+					Segment newS = new Segment(s1.other(sharedP), s2.other(sharedP));
+					// add the segment to queue and to set
 					q.add(newS);
+					System.out.println(newS.toString());
 					nonMinSeg.add(newS);
 				}
 			}

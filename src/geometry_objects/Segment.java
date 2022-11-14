@@ -154,14 +154,13 @@ public class Segment extends GeometricObject
 	 */
 	public boolean coincideWithoutOverlap(Segment that)
 	{
+		if (this.equals(that)) return false;
 		if (!isCollinearWith(that)) return false;
 		// if either segment has one endpoint that lies the other segment 
 		if (SegmentDelegate.pointLiesBetweenEndpoints(that, _point1) ||
 				SegmentDelegate.pointLiesBetweenEndpoints(that, _point2)) return false;
 		if (SegmentDelegate.pointLiesBetweenEndpoints(this, that.getPoint1()) || 
 				SegmentDelegate.pointLiesBetweenEndpoints(this, that.getPoint2())) return false;
-		// if the segments has the same endpoints
-		if (this.equals(that)) return false;
 		return true;
 	}
 	
@@ -177,5 +176,10 @@ public class Segment extends GeometricObject
 			if(pointLiesBetweenEndpoints(p))
 				pointsOn.add(p);
 		return pointsOn;
+	}
+	
+	@Override
+	public String toString() {
+		return "(" + _point1.toString() + ", " + _point2.toString() + ")";
 	}
 }

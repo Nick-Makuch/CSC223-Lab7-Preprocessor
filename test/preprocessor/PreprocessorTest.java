@@ -3,7 +3,11 @@ package preprocessor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,8 +64,8 @@ class PreprocessorTest
 		assertTrue(iPoints.contains(a_star));
 //		assertTrue(iPoints.contains(b_star));
 //		assertTrue(iPoints.contains(c_star));
-//		assertTrue(iPoints.contains(d_star));
-//		assertTrue(iPoints.contains(e_star));
+		assertTrue(iPoints.contains(d_star));
+		assertTrue(iPoints.contains(e_star));
 
 		//
 		// There are 15 implied segments inside the pentagon; see figure above
@@ -158,5 +162,42 @@ class PreprocessorTest
 		{
 			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
 		}
+	}
+	
+	@Test
+	void testConstructAllNonMinimalSegments_withTwoSegments() 
+	{
+		//
+		//   A --- B --- C --- D
+		//
+		Point a = new Point(0,0);
+		Point b = new Point(0,4);
+		Point c = new Point(0,6);
+		Point d = new Point(0,8);
+		
+		List<Point> ptList = new LinkedList<Point>();
+		ptList.add(c);
+		ptList.add(a);
+		ptList.add(b);
+		ptList.add(d);
+		Segment ab = new Segment(a,b);
+		Segment bc = new Segment(b,c);
+		Segment cd = new Segment(c,d);
+		
+		
+		Set<Segment> minSeg = new HashSet<Segment>();
+		minSeg.add(bc);
+		minSeg.add(ab);
+		minSeg.add(cd);
+		PointDatabase ptdb = new PointDatabase(ptList);
+		Preprocessor pp = new Preprocessor(ptdb, minSeg);
+		Set<Segment> nonMinSeg = pp.constructAllNonMinimalSegments(minSeg);
+		
+		
+		assertTrue(nonMinSeg.contains(new Segment(a,c)));
+		assertTrue(nonMinSeg.contains(new Segment(a,d)));
+		assertTrue(nonMinSeg.contains(new Segment(b,d)));
+		
+		
 	}
 }
