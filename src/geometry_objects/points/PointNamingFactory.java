@@ -200,21 +200,17 @@ public class PointNamingFactory
 	public boolean contains(double x, double y) { return _database.containsKey(new Point(x, y)); }
 	public boolean contains(Point p) { return _database.containsKey(p);}
 
+	public Point rename(Point p) 
+	{ 
+		if(p == null) return null;
+		return new Point(getCurrentName(), p.getX(), p.getY()); 
+	}
+	
 	/**
 	 * @return acquires and returns the next name in sequence; also
 	 * generates the next name in a 'lazy list' manner 
 	 */
 	private String getCurrentName()
-	{
-        String string = _PREFIX + _currentName;
-        updateName();
-        return string;
-	}
-	
-	/**
-	 * used for testing
-	 * */
-	public String getCurrentNameTester()
 	{
         String string = _PREFIX + _currentName;
         updateName();

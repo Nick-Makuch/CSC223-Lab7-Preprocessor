@@ -39,6 +39,8 @@ public class ImplicitPointPreprocessorTest
 		Point c = new Point("C", 6.0, 6.0);
 		Point d = new Point("D", 4.0, 4.0);
 		
+		Point x = new Point(4.0, 6.0);
+		
 		Segment ab = new Segment(a, b);
 		Segment ac = new Segment(a, c);
 		Segment ad = new Segment(a, d);
@@ -69,15 +71,11 @@ public class ImplicitPointPreprocessorTest
 		assertEquals(1, tester.size());
 		assertFalse(tester.contains(null));
 		
-		//finding correct num of implicit points, but is not putting points in set
-//		assertTrue(tester.contains(null));
-//		assertFalse(tester.contains(null));
-//		assertTrue(false);
-		
 		Object[] arr = tester.toArray();
 		assertTrue(arr[0] instanceof Point);
 		Point point = (Point) arr[0];
-		System.out.println(point.getName() + " : " + point.getX() + ", " + point.getY());
+		//System.out.println(point.getName() + " : " + point.getX() + ", " + point.getY());
+		assertEquals(point, x);
 
 	}
 }

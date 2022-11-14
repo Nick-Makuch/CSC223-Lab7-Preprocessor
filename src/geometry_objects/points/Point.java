@@ -104,9 +104,9 @@ public class Point implements Comparable<Point>
 		return this.compareTo(point) == 0;
 	}
 	
-//	public String toString() 
-//	{
-//		return getName() + "(" + getX() + " , " + getY() + ")" + "\n";
-//	}
+	public String toString() 
+	{
+		return getName() + "(" + getX() + " , " + getY() + ")" + "\n";
+	}
 	
 }
