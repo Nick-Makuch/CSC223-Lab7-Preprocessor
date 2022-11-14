@@ -65,7 +65,7 @@ public class ImplicitPointPreprocessorTest
 		
 		Set<Point> tester = new HashSet<Point>();
 		assertTrue(tester.isEmpty());
-				
+		
 		tester = ImplicitPointPreprocessor.compute(pointsDatabase, segList);
 		assertFalse(tester.isEmpty());
 		assertEquals(1, tester.size());

@@ -3,8 +3,10 @@ package preprocessor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -127,8 +129,14 @@ public class Preprocessor
 	}
 
 	/**
+	 * loops through each segment and checks if it is a min segment
+	 * by checking if there's an implicit point on the segment
 	 * 
-	 * */
+	 * @param _implicitPoints2
+	 * @param _givenSegments2
+	 * @param _implicitSegments2
+	 * @return allMinSegments -- set containing all min segments
+	 */
 	protected Set<Segment> identifyAllMinimalSegments(Set<Point> _implicitPoints2, Set<Segment> _givenSegments2, 
 																					Set<Segment> _implicitSegments2) 
 	{
@@ -168,33 +176,36 @@ public class Preprocessor
 	protected Set<Segment> constructAllNonMinimalSegments(Set<Segment> _allMinimalSegments2) 
 	{
 		Set<Segment> nonMinSeg = new HashSet<Segment>();
-		for (Segment s1 : _allMinimalSegments2) {
-			for (Segment s2: _allMinimalSegments2) {
-				// if they are collinear and they segments are the same
-				if (!s1.equals(s2) && s1.coincideWithoutOverlap(s2)) {
-					// if they share a vertex, then proceed
-					if (s1.sharedVertex(s2) != null) {
-						Segment newS = null;
-						Point sharedP = s1.sharedVertex(s2);
-						// determines which which points that make up the segment
-						if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint1())) { 
-							newS = new Segment(s1.getPoint2(), s2.getPoint2());
-						}
-						else if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint2())) {
-							newS = new Segment(s1.getPoint2(), s2.getPoint1());
-						}
-						else if (sharedP.equals(s1.getPoint2()) && sharedP.equals(s2.getPoint1())) {
-							newS = new Segment(s1.getPoint1(), s2.getPoint2());
-						}
-						else {
-							newS = new Segment(s1.getPoint1(), s2.getPoint1());
-						}
-						nonMinSeg.add(newS);
+		// create a queue and add all minimal segments
+		Queue<Segment> q = new LinkedList<Segment>();
+		q.addAll(_allMinimalSegments2);
+		while (!q.isEmpty()) {
+			// check each segment if it's a subsegment of another
+			Segment s1 = q.remove();
+			for (Segment s2 : _allMinimalSegments2) {
+				// if the segments are collinear, share a vertex and are not the same
+				Point sharedP = s1.sharedVertex(s2);
+				if (!s1.equals(s2) && s1.coincideWithoutOverlap(s2) && sharedP != null) {
+					Segment newS = null;
+					// determines which which points that make up the segment
+					if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint1())) { 
+						newS = new Segment(s1.getPoint2(), s2.getPoint2());
 					}
+					else if (sharedP.equals(s1.getPoint1()) && sharedP.equals(s2.getPoint2())) {
+						newS = new Segment(s1.getPoint2(), s2.getPoint1());
+					}
+					else if (sharedP.equals(s1.getPoint2()) && sharedP.equals(s2.getPoint1())) {
+						newS = new Segment(s1.getPoint1(), s2.getPoint2());
+					}
+					else {
+						newS = new Segment(s1.getPoint1(), s2.getPoint1());
+					}
+					// add the new segment to queue and to the set that is returned
+					q.add(newS);
+					nonMinSeg.add(newS);
 				}
 			}
 		}
 		return nonMinSeg;
 	}
-	
 }
