@@ -18,8 +18,8 @@ public class ImplicitPointPreprocessor
 	 * points and name them.
 	 * 
 	 * Algorithm:
-	 *    Check each segment for intersection. If two segment intersect, 
-	 *    check if the implicit point already exist, and if it doesn't
+	 *    Check each segment for intersection. If two segments intersect, 
+	 *    check if the implicit point already exists, and if it doesn't
 	 *    then we add to the set of implicit points.
 	 */
 	public static Set<Point> compute(PointDatabase givenPoints, List<Segment> givenSegments)
@@ -43,7 +43,6 @@ public class ImplicitPointPreprocessor
 				}
 			}
 		}
-
 		return implicitPoints;
 	}
 

@@ -180,6 +180,6 @@ public class Segment extends GeometricObject
 	
 	@Override
 	public String toString() {
-		return "(" + _point1.toString() + ", " + _point2.toString() + ")";
+		return "(" + _point1.toString() + ", " + _point2.toString() + ")" + "\n";
 	}
 }

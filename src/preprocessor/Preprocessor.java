@@ -2,6 +2,7 @@ package preprocessor;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,6 +105,35 @@ public class Preprocessor
 		for (Segment s : _givenSegments) {
 			// gets the set of imp points on the segment and converts it to a list
 			SortedSet<Point> pointsOnSegSet = s.collectOrderedPointsOnSegment(_implicitPoints2);
+			Iterator<Point> itrPoint = pointsOnSegSet.iterator();
+			Segment newS = null;
+			Point currP = null;
+			if (s.getPoint1().compareTo(s.getPoint2()) == -1) {
+				currP = s.getPoint1();
+			}
+			else if (s.getPoint1().compareTo(s.getPoint2()) == 1){
+				currP = s.getPoint2();
+			}
+			
+			// create segments from the endpoints to closest imp points
+			while (itrPoint.hasNext()) {
+				newS = new Segment(currP, itrPoint.next());
+				impSeg.add(newS);
+				currP = newS.getPoint2();
+			}
+			if (s.pointLiesBetweenEndpoints(currP) &&
+					(s.getPoint1().compareTo(s.getPoint2()) == -1)) {
+				newS = new Segment(currP, s.getPoint2());
+				impSeg.add(newS);
+			}
+			else if (s.pointLiesBetweenEndpoints(currP) &&
+					(s.getPoint1().compareTo(s.getPoint2()) == 1)) {
+				newS = new Segment(currP, s.getPoint1());
+				impSeg.add(newS);
+			}
+		}
+			
+			/*
 			List<Point> ptList = new LinkedList<Point>(pointsOnSegSet);
 			Segment newS = null;
 			// create the segments from the endpoints to the closest implicit points
@@ -120,6 +150,7 @@ public class Preprocessor
 				impSeg.add(newS);
 			}
 		}
+		*/
 		return impSeg;	
 	}
 
@@ -181,7 +212,6 @@ public class Preprocessor
 					Segment newS = new Segment(s1.other(sharedP), s2.other(sharedP));
 					// add the segment to queue and to set
 					q.add(newS);
-					System.out.println(newS.toString());
 					nonMinSeg.add(newS);
 				}
 			}
