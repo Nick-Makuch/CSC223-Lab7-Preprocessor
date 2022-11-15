@@ -106,7 +106,7 @@ public class Point implements Comparable<Point>
 	
 	public String toString() 
 	{
-		return getName() + "(" + getX() + " , " + getY() + ")";
+		return getName() + "(" + getX() + " , " + getY() + ")" + "\n";
 	}
 	
 }

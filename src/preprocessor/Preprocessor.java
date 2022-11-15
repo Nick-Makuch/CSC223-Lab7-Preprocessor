@@ -103,31 +103,38 @@ public class Preprocessor
 		Set<Segment> impSeg = new HashSet<Segment>();
 		// looks at each segment
 		for (Segment s : _givenSegments) {
+			
 			// gets the set of imp points on the segment and converts it to a list
 			SortedSet<Point> pointsOnSegSet = s.collectOrderedPointsOnSegment(_implicitPoints2);
 			Iterator<Point> itrPoint = pointsOnSegSet.iterator();
+			
 			Segment newS = null;
 			Point currP = null;
-			if (s.getPoint1().compareTo(s.getPoint2()) == -1) {
+			
+			// determines which end point is lower
+			int cmp = s.getPoint1().compareTo(s.getPoint2());
+
+			// imp points are sorted from low to high
+			// so we start with the lower endpoint
+			if (cmp < 0) {
 				currP = s.getPoint1();
 			}
-			else if (s.getPoint1().compareTo(s.getPoint2()) == 1){
+			else if (cmp > 0){
 				currP = s.getPoint2();
 			}
-			
 			// create segments from the endpoints to closest imp points
 			while (itrPoint.hasNext()) {
 				newS = new Segment(currP, itrPoint.next());
 				impSeg.add(newS);
 				currP = newS.getPoint2();
 			}
-			if (s.pointLiesBetweenEndpoints(currP) &&
-					(s.getPoint1().compareTo(s.getPoint2()) == -1)) {
+			// if there was an implicit point, then connect last imp
+			// point with the remaining endpoint
+			if (s.pointLiesBetweenEndpoints(currP) && (cmp < 0)) {
 				newS = new Segment(currP, s.getPoint2());
 				impSeg.add(newS);
 			}
-			else if (s.pointLiesBetweenEndpoints(currP) &&
-					(s.getPoint1().compareTo(s.getPoint2()) == 1)) {
+			else if (s.pointLiesBetweenEndpoints(currP) && (cmp > 0)) {
 				newS = new Segment(currP, s.getPoint1());
 				impSeg.add(newS);
 			}
