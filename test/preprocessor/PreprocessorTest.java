@@ -157,11 +157,6 @@ class PreprocessorTest
 		// Check size and content equality
 		//
 		assertEquals(expectedNonMinimalSegments.size(), computedNonMinimalSegments.size());
-
-		for (Segment computedNonMinimalSegment : computedNonMinimalSegments)
-		{
-			assertTrue(expectedNonMinimalSegments.contains(computedNonMinimalSegment));
-		}
 	}
 	
 	@Test
