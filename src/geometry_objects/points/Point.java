@@ -101,7 +101,8 @@ public class Point implements Comparable<Point>
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Point point = (Point) o;
-		return this.compareTo(point) == 0;
+		
+		return MathUtilities.doubleEquals(this._x, point._x) && MathUtilities.doubleEquals(this._y, point._y);
 	}
 	
 	public String toString() 

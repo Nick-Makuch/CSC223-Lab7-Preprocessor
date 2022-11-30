@@ -25,7 +25,6 @@ public class ImplicitPointPreprocessor
 	public static Set<Point> compute(PointDatabase givenPoints, List<Segment> givenSegments)
 	{
 		Set<Point> implicitPoints = new LinkedHashSet<Point>();
-		PointNamingFactory p = new PointNamingFactory();
 		
 		Set<Point> allGivenPoints = givenPoints.getPoints();
 		for(int i = 0; i < givenSegments.size()-1; i++) 
@@ -34,10 +33,9 @@ public class ImplicitPointPreprocessor
 			{
 				
 				 Point checkPoint = givenSegments.get(i).segmentIntersection(givenSegments.get(j));
-				 checkPoint = p.rename(checkPoint); 
 				 
 				//checks if point of intersection is an existing point
-				if(!(allGivenPoints.contains(checkPoint)) && checkPoint != null) 
+				if(checkPoint != null && !(allGivenPoints.contains(checkPoint))) 
 				{
 					implicitPoints.add(checkPoint);
 				}

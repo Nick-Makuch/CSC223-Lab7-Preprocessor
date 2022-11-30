@@ -62,8 +62,8 @@ class PreprocessorTest
 		Point e_star = new Point(194.0 / 55, 182.0 / 55);
 		
 		assertTrue(iPoints.contains(a_star));
-//		assertTrue(iPoints.contains(b_star));
-//		assertTrue(iPoints.contains(c_star));
+		assertTrue(iPoints.contains(b_star));
+		assertTrue(iPoints.contains(c_star));
 		assertTrue(iPoints.contains(d_star));
 		assertTrue(iPoints.contains(e_star));
 
@@ -98,7 +98,7 @@ class PreprocessorTest
 
 		for (Segment iSegment : iSegments)
 		{
-			assertTrue(iSegments.contains(iSegment));
+			assertTrue(expectedISegments.contains(iSegment));
 		}
 
 		//
